@@ -1,0 +1,197 @@
+<div class="container py-5">
+
+  <!-- Back -->
+  <button
+    type="button"
+    class="btn btn-outline-secondary mb-4"
+    (click)="goBackHome()"
+  >
+    <i class="bi bi-arrow-left me-2"></i>
+    Back to Recipes
+  </button>
+
+
+  @if (recipe) {
+
+    <!-- Recipe Header -->
+    <div class="card border-0 shadow-lg overflow-hidden">
+
+      <div class="bg-primary text-white p-4 p-md-5">
+
+        <div class="d-flex justify-content-between align-items-start gap-3">
+
+          <div>
+
+            <span class="badge bg-white text-primary mb-3">
+              {{ recipe.difficulty }} Difficulty
+            </span>
+
+            <h1 class="display-5 fw-bold mb-3">
+              {{ recipe.name }}
+            </h1>
+
+            <p class="lead mb-0 opacity-75">
+              {{ recipe.description }}
+            </p>
+
+          </div>
+
+          @if (recipe.is_vegetarian) {
+
+            <span class="badge bg-success rounded-pill px-3 py-2">
+              <i class="bi bi-leaf me-1"></i>
+              Vegetarian
+            </span>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- Recipe Information -->
+      <div class="card-body p-4 p-md-5">
+
+        <div class="row g-4 mb-5">
+
+          <!-- Cooking Time -->
+          <div class="col-md-4">
+
+            <div class="border rounded-4 p-4 h-100">
+
+              <div class="d-flex align-items-center gap-3">
+
+                <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3">
+                  <i class="bi bi-clock fs-4"></i>
+                </div>
+
+                <div>
+                  <small class="text-muted d-block">
+                    Cooking Time
+                  </small>
+
+                  <strong class="fs-5">
+                    {{ recipe.cooking_time }} minutes
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Difficulty -->
+          <div class="col-md-4">
+
+            <div class="border rounded-4 p-4 h-100">
+
+              <div class="d-flex align-items-center gap-3">
+
+                <div class="bg-warning bg-opacity-10 text-warning rounded-3 p-3">
+                  <i class="bi bi-bar-chart fs-4"></i>
+                </div>
+
+                <div>
+                  <small class="text-muted d-block">
+                    Difficulty
+                  </small>
+
+                  <strong class="fs-5">
+                    {{ recipe.difficulty }}
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Type -->
+          <div class="col-md-4">
+
+            <div class="border rounded-4 p-4 h-100">
+
+              <div class="d-flex align-items-center gap-3">
+
+                <div class="bg-success bg-opacity-10 text-success rounded-3 p-3">
+                  <i class="bi bi-leaf fs-4"></i>
+                </div>
+
+                <div>
+                  <small class="text-muted d-block">
+                    Recipe Type
+                  </small>
+
+                  <strong class="fs-5">
+                    {{ recipe.is_vegetarian ? 'Vegetarian' : 'Non-Vegetarian' }}
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Ingredients -->
+        <div>
+
+          <div class="d-flex align-items-center gap-3 mb-4">
+
+            <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2">
+              <i class="bi bi-basket2 fs-5"></i>
+            </div>
+
+            <div>
+              <h4 class="fw-bold mb-0">
+                Ingredients
+              </h4>
+
+              <small class="text-muted">
+                Everything you need for this recipe
+              </small>
+            </div>
+
+          </div>
+
+
+          <div class="row g-3">
+
+            @for (ingredient of recipe.ingredients;
+              track ingredient.id) {
+
+              <div class="col-12 col-sm-6 col-lg-4">
+
+                <div class="border rounded-3 p-3 d-flex align-items-center gap-3">
+
+                  <i class="bi bi-check-circle-fill text-success"></i>
+
+                  <span class="fw-medium">
+                    {{ ingredient.name }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
