@@ -61,8 +61,7 @@ export class RecipeForm implements OnInit {
 
         this.selectedIngredientIds =
           res.ingredients.map(item => item.id);
-      },
-      error: error => console.error(error)
+      }
     });
   }
 
@@ -70,9 +69,6 @@ export class RecipeForm implements OnInit {
     this._recipeService.getIngredients().subscribe({
       next: res => {
         this.ingredients = res;
-      },
-      error: err => {
-        console.error(err);
       }
     })
   }
@@ -98,9 +94,6 @@ export class RecipeForm implements OnInit {
       next: () => {
         this.saved.emit();
         this._modalRef.hide();
-      },
-      error: (err) => {
-        console.error(err)
       }
     })
   }

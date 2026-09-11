@@ -37,7 +37,6 @@ export class RecipeDetails implements OnInit {
         this.recipe = res;
       },
       error: err => {
-        console.error(err);
         this.goBackHome();
       }
     })

@@ -12,3 +12,10 @@ export interface IngredientModel {
   id: number;
   name: string;
 }
+
+export interface RecipeResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: RecipeModel[];
+}

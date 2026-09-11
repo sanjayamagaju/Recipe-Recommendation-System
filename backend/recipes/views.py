@@ -1,19 +1,41 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Recipe, Ingredient
 from .serializers import RecipeSerializer, IngredientSerializer
+
 
 
 class RecipeListCreateView(APIView):
 
     def get(self, request):
         recipes = Recipe.objects.all()
-        serializer = RecipeSerializer(recipes, many=True)
 
-        return Response(serializer.data)
+        search = request.query_params.get('search')
+        difficulty = request.query_params.get('difficulty')
+        vegetarian = request.query_params.get('vegetarian')
+        page_size = request.query_params.get('page_size')
+
+        if search:
+            recipes = recipes.filter(name__icontains=search)
+
+        if difficulty:
+            recipes = recipes.filter(difficulty=difficulty)
+
+        if vegetarian == 'true':
+            recipes = recipes.filter(is_vegetarian=True)
+
+        paginator = PageNumberPagination()
+
+        if page_size:
+            paginator.page_size = int(page_size)
+
+        page = paginator.paginate_queryset(recipes, request)
+
+        serializer = RecipeSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = RecipeSerializer(data=request.data)
