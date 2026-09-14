@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { RecipeModel, RecipeResponse } from '../../models/recipe';
-import { RecipeService } from '../../services/recipe.service';
-import { RecipeModalService } from '../../services/recipe-modal.service';
-import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { PAGINATION_SIZES } from '../../utils/constants';
+import {Component, OnInit} from '@angular/core';
+import {RecipeModel, RecipeResponse} from '../../models/recipe';
+import {RecipeService} from '../../services/recipe.service';
+import {RecipeModalService} from '../../services/recipe-modal.service';
+import {RouterLink} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
+import {PAGINATION_SIZES} from '../../utils/constants';
+
 
 @Component({
   selector: 'app-recipe-list',
@@ -32,20 +33,51 @@ export class RecipeList implements OnInit {
     private _recipeService: RecipeService,
     private _recipeModalService: RecipeModalService,
     private _toastrService: ToastrService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadRecipes();
   }
 
   getPages() {
-    return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    const total = this.totalPages;
+    const current = this.currentPage;
+
+    if (total <= 7) {
+      return Array.from(
+        {length: total},
+        (_, index) => index + 1,
+      )
+    }
+
+    if (current <= 4) {
+      return [1, 2, 3, 4, 5, '...', total];
+    }
+
+    if (current >= total - 3) {
+      return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+    }
+
+    return [
+      1,
+      '...',
+      current - 1,
+      current,
+      current + 1,
+      '...',
+      total
+    ];
   }
 
   goToPage(page: number): void {
     if (page !== this.currentPage) {
       this.loadRecipes(page);
     }
+  }
+
+  isPageNumber(page: number | string): page is number {
+    return typeof page === 'number';
   }
 
   openCreateModal(): void {

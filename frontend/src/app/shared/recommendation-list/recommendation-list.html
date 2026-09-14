@@ -1,0 +1,268 @@
+@if (recommendations.length > 0) {
+
+  <section class="recommendations-section mt-5 pt-5">
+
+    <!-- Header -->
+    <div class="recommendations-header mb-4">
+
+      <div>
+        <div class="recommendations-eyebrow">
+          <i class="bi bi-stars"></i>
+          Personalized for you
+        </div>
+
+        <h2 class="recommendations-title">
+          You might also like
+        </h2>
+
+        <p class="recommendations-subtitle">
+          Recipes selected based on the ingredients you're exploring.
+        </p>
+      </div>
+
+      <div class="recommendations-count">
+        <strong>{{ recommendations.length }}</strong>
+        <span>matches</span>
+      </div>
+
+    </div>
+
+
+    <!-- Featured recommendation -->
+    @if (recommendations[0]; as featured) {
+
+      <div class="featured-recipe mb-4">
+
+        <div class="featured-content">
+
+          <div class="featured-top">
+
+            <span class="featured-label">
+              <i class="bi bi-lightning-charge-fill"></i>
+              Best Match
+            </span>
+
+            <div class="match-score">
+              <span>{{ featured.match_percentage }}%</span>
+              <small>match</small>
+            </div>
+
+          </div>
+
+
+          <div class="featured-main">
+
+            <div class="featured-icon">
+              <i class="bi bi-egg-fried"></i>
+            </div>
+
+            <div>
+
+              <h3>
+                {{ featured.recipe.name }}
+              </h3>
+
+              <p>
+                {{ featured.recipe.description }}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="featured-meta">
+
+            <span>
+              <i class="bi bi-clock"></i>
+              {{ featured.recipe.cooking_time }} min
+            </span>
+
+            <span>
+              <i class="bi bi-bar-chart"></i>
+              {{ featured.recipe.difficulty }}
+            </span>
+
+            @if (featured.recipe.is_vegetarian) {
+              <span class="vegetarian">
+                <i class="bi bi-leaf"></i>
+                Vegetarian
+              </span>
+            }
+
+          </div>
+
+
+          @if (featured.recipe.ingredients.length > 0) {
+
+            <div class="featured-ingredients">
+
+              <span class="ingredients-label">
+                Ingredients
+              </span>
+
+              <div class="ingredient-list">
+
+                @for (ingredient of featured.recipe.ingredients.slice(0, 5);
+                  track ingredient.id) {
+
+                  <span class="ingredient-chip">
+                    {{ ingredient.name }}
+                  </span>
+
+                }
+
+                @if (featured.recipe.ingredients.length > 5) {
+
+                  <span class="ingredient-chip more">
+                    +{{ featured.recipe.ingredients.length - 5 }}
+                  </span>
+
+                }
+
+              </div>
+
+            </div>
+
+          }
+
+
+          <a
+            class="btn btn-dark featured-button"
+            [routerLink]="[
+              '/recipes',
+              featured.recipe.id
+            ]"
+          >
+            View Recipe
+            <i class="bi bi-arrow-up-right ms-2"></i>
+          </a>
+
+        </div>
+
+      </div>
+
+    }
+
+
+    <!-- Other recommendations -->
+
+    @if (recommendations.length > 1) {
+
+      <div class="row g-3">
+
+        @for (recommendation of recommendations.slice(1);
+          track recommendation.recipe.id) {
+
+          <div class="col-md-6">
+
+            <article class="recommendation-card">
+
+              <div class="recommendation-card-top">
+
+                <div class="recipe-icon">
+                  <i class="bi bi-egg-fried"></i>
+                </div>
+
+                <div class="card-match">
+
+                  <strong>
+                    {{ recommendation.match_percentage }}%
+                  </strong>
+
+                  <small>
+                    match
+                  </small>
+
+                </div>
+
+              </div>
+
+
+              <div class="recommendation-card-body">
+
+                <h4>
+                  {{ recommendation.recipe.name }}
+                </h4>
+
+                <p>
+                  {{ recommendation.recipe.description }}
+                </p>
+
+
+                <div class="recipe-meta">
+
+                  <span>
+                    <i class="bi bi-clock"></i>
+                    {{ recommendation.recipe.cooking_time }} min
+                  </span>
+
+                  <span>
+                    <i class="bi bi-bar-chart"></i>
+                    {{ recommendation.recipe.difficulty }}
+                  </span>
+
+                  @if (recommendation.recipe.is_vegetarian) {
+
+                    <span class="vegetarian">
+                      <i class="bi bi-leaf"></i>
+                      Vegetarian
+                    </span>
+
+                  }
+
+                </div>
+
+
+                @if (recommendation.recipe.ingredients.length > 0) {
+
+                  <div class="small-ingredients">
+
+                    @for (ingredient of recommendation.recipe.ingredients.slice(0, 3);
+                      track ingredient.id) {
+
+                      <span>
+                        {{ ingredient.name }}
+                      </span>
+
+                    }
+
+                    @if (recommendation.recipe.ingredients.length > 3) {
+
+                      <span>
+                        +{{ recommendation.recipe.ingredients.length - 3 }}
+                      </span>
+
+                    }
+
+                  </div>
+
+                }
+
+              </div>
+
+
+              <a
+                class="recommendation-action"
+                [routerLink]="[
+                  '/recipes',
+                  recommendation.recipe.id
+                ]"
+              >
+                View recipe
+                <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </article>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+}

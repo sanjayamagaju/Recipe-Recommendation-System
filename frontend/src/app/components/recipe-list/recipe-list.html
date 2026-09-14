@@ -231,12 +231,25 @@
           </button>
         </li>
 
-        @for (page of getPages(); track page) {
-          <li class="page-item" [class.active]="page === currentPage">
-            <button type="button" class="page-link" (click)="goToPage(page)">
-              {{ page }}
-            </button>
-          </li>
+        @for (page of getPages(); track $index) {
+          @if (page === '...') {
+            <li class="page-item disabled">
+              <span class="page-link">...</span>
+            </li>
+          } @else if (isPageNumber(page)) {
+            <li
+              class="page-item"
+              [class.active]="page === currentPage"
+            >
+              <button
+                type="button"
+                class="page-link"
+                (click)="goToPage(page)"
+              >
+                {{ page }}
+              </button>
+            </li>
+          }
         }
 
         <li class="page-item" [class.disabled]="!hasNextPage">

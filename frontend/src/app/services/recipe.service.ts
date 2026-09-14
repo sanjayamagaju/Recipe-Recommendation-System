@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { IngredientModel, RecipeModel, RecipeResponse } from '../models/recipe';
-import { environment } from '../../environments/environment';
+import {IngredientModel, RecipeModel, RecipeResponse, RecommendationModel} from '../models/recipe';
+import {environment} from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,8 @@ import { environment } from '../../environments/environment';
 export class RecipeService {
   private apiUrl: string = `${environment.apiUrl}/recipes/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getRecipes(): Observable<RecipeModel[]> {
     return this.http.get<RecipeModel[]>(`${this.apiUrl}`);
@@ -54,7 +56,17 @@ export class RecipeService {
     if (vegetarian) {
       params.vegetarian = vegetarian;
     }
-    
-    return this.http.get<RecipeResponse>(this.apiUrl, { params });
+
+    return this.http.get<RecipeResponse>(this.apiUrl, {params});
+  }
+
+  getRecommendations(recipeId: number, ingredientIds: number[]) {
+    return this.http.post<RecommendationModel[]>(
+      `${environment.apiUrl}/recommendations/`,
+      {
+        recipe_id: recipeId,
+        ingredient_ids: ingredientIds
+      }
+    );
   }
 }

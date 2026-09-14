@@ -19,3 +19,9 @@ export interface RecipeResponse {
   previous: string | null;
   results: RecipeModel[];
 }
+
+export interface RecommendationModel {
+  recipe: RecipeModel;
+  score: number;
+  match_percentage: number;
+}
